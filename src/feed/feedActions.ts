@@ -21,10 +21,14 @@ export function PolitiecontroleFeedRecieved(data?: Array<PolitieControleFeedItem
 
 export function getPolitieControleFeed(next?: string) {
     return function(dispatch: any) {
+        let params = {};
+        if (next) {
+            params = {limit: 5};
+        }
         FB.api(
             next ? next : '/politiecontrole/feed',
             'GET',
-            {limit: 15},
+            params,
             function(jsonResult: any) {
                 if (jsonResult && jsonResult.data) {
                     const items = jsonResult.data.map(function(item: any){
