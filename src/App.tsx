@@ -1,6 +1,6 @@
 import * as React from 'react';
 import './App.css';
-import Feed from './feed/feed';
+import {FeedContainer} from './feed/feedContainer';
 /// <reference path="../typings/react-tap-event-plugin.d.ts" />
 import injectTapEventPlugin = require('react-tap-event-plugin');
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
@@ -17,7 +17,7 @@ class App extends React.Component<{}, null> {
       <MuiThemeProvider>
         <div>
           <AppBar title="Politiecontrole" showMenuIconButton={false}/>
-          <Feed />
+          <FeedContainer />
         </div>        
       </MuiThemeProvider>
     );

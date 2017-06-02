@@ -2,10 +2,21 @@ import * as React from 'react';
 import '../App.css';
 import {List, ListItem} from 'material-ui/List';
 import Subheader from 'material-ui/Subheader';
+import {PolitieControleFeedItem} from '../types/politieControleFeedItem';
 
-export class Feed extends React.Component<{}, null> {
-  constructor() {
-    super();
+interface FeedProps {
+  feed: Array<PolitieControleFeedItem>;
+  getFeed: () => void;
+}
+
+interface FeedState {
+
+}
+
+export class Feed extends React.Component<FeedProps, FeedState> {
+  constructor(props: FeedProps) {
+    super(props);
+    this.props.getFeed();
   }
 
   render() {
