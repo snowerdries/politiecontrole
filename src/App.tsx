@@ -30,6 +30,7 @@ class App extends React.Component<{}, {token?: string}> {
       const self = this;
       FB.init({
               appId: '249544888855622',
+              // appId: '853341981486218',
               cookie: true,  // enable cookies to allow the server to access the session
               xfbml: true,  // parse social plugins on this page
               version: 'v2.9' // use graph api version 2.9

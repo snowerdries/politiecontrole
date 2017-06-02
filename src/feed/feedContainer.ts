@@ -9,15 +9,16 @@ interface Props {
 
 function mapDispatchToProps(dispatch: any, props: Props) {
     return {
-        getFeed: () => {
-            dispatch(getPolitieControleFeed());
+        getFeed: (next?: string) => {
+            dispatch(getPolitieControleFeed(next));
         }
     };
 }
 
 function mapStateToProps(state: MainReducer) {
     return {
-        feed: state.feed && state.feed.data ? state.feed.data : [],
+        feed: state.feed && state.feed.data ? state.feed.data  : [],
+        next: state.feed && state.feed.next ? state.feed.next : ''
     };
 }
 
