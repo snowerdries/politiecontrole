@@ -3,6 +3,7 @@ import '../App.css';
 import {List, ListItem} from 'material-ui/List';
 import Subheader from 'material-ui/Subheader';
 import {PolitieControleFeedItem} from '../types/politieControleFeedItem';
+import * as moment from 'moment';
 
 interface FeedProps {
   feed: Array<PolitieControleFeedItem>;
@@ -24,11 +25,18 @@ export class Feed extends React.Component<FeedProps, FeedState> {
       <div>
         <List>
           <Subheader>Controles</Subheader>
-          <ListItem primaryText="Controle 1" />
-          <ListItem primaryText="Controle 2" />
-          <ListItem primaryText="Controle 3" />
-          <ListItem primaryText="Controle 4" />
-          <ListItem primaryText="Controle 5" />
+          {
+            this.props.feed.map(function(item: PolitieControleFeedItem, index: number){
+              const key = 'item' + index;
+              return (
+                <ListItem 
+                  key={key} 
+                  primaryText={item.message} 
+                  secondaryText={moment(item.created_time).format('DD/MM/YYYY HH:mm')} 
+                />
+              );    
+            })
+          }
         </List>      
       </div>
     );

@@ -2,6 +2,8 @@ import {POLITIECONTROLE_FEED_RECIEVED} from '../constants/actionTypes';
 import PolitieControleFeedItem from '../types';
 import { Action } from 'redux';
 
+declare const FB: any;
+
 export interface GetPolitiecontroleFeedAction extends Action {
     data?: Array<PolitieControleFeedItem>;
 }
@@ -15,7 +17,18 @@ export function PolitiecontroleFeedRecieved(data?: Array<PolitieControleFeedItem
 
 export function getPolitieControleFeed() {
     return function(dispatch: any) {
-        dispatch(PolitiecontroleFeedRecieved([{message: '123'}]));
-    };
-    // return PolitiecontroleFeedRecieved([{message: '123'}]);    
+        FB.api(
+            '/politiecontrole/feed',
+            'GET',
+            {},
+            function(jsonResult: any) {
+                if (jsonResult && jsonResult.data) {
+                    const items = jsonResult.data.map(function(item: any){
+                        return {message: item.message, created_time: item.created_time };
+                    });
+                    dispatch(PolitiecontroleFeedRecieved(items));
+                }   
+            }
+        );        
+    };   
 }
