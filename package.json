@@ -8,13 +8,19 @@
     "@types/node": "^7.0.22",
     "@types/react": "^15.0.25",
     "@types/react-dom": "^15.5.0",
+    "@types/react-redux": "^4.4.40",
     "material-ui": "^0.18.1",
+    "moment": "^2.18.1",
     "react": "^15.5.4",
     "react-dom": "^15.5.4",
-    "react-tap-event-plugin": "^2.0.1"
+    "react-redux": "^5.0.5",
+    "react-tap-event-plugin": "^2.0.1",
+    "redux": "^3.6.0",
+    "redux-thunk": "^2.2.0"
   },
   "devDependencies": {
-    "react-scripts-ts": "2.2.0"
+    "react-scripts-ts": "2.2.0",
+    "redux-devtools": "^3.4.0"
   },
   "scripts": {
     "start": "react-scripts-ts start",
