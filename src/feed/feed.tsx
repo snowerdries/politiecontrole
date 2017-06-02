@@ -7,7 +7,8 @@ import * as moment from 'moment';
 
 interface FeedProps {
   feed: Array<PolitieControleFeedItem>;
-  getFeed: () => void;
+  next: string;
+  getFeed: (next?: string) => void;
 }
 
 interface FeedState {
@@ -15,10 +16,21 @@ interface FeedState {
 }
 
 export class Feed extends React.Component<FeedProps, FeedState> {
+  onScrollHandler = this.facebookLoadNext.bind(this);
+
   constructor(props: FeedProps) {
     super(props);
     this.props.getFeed();
+    window.addEventListener('scroll', this.onScrollHandler);  
   }
+
+ facebookLoadNext() {
+     if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight) {
+          // you're at the bottom of the page          
+          this.props.getFeed(this.props.next);
+      }   
+ }
+
 
   render() {
     return (
