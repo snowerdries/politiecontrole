@@ -53,6 +53,7 @@ class App extends React.Component<{}, {token?: string}> {
 
   render() {
     let content = null;
+    let styleAppBar = {};
     if (!this.state.token) {
       content = (
         <div>          
@@ -60,12 +61,17 @@ class App extends React.Component<{}, {token?: string}> {
         </div>
       );
     } else {
+      styleAppBar = {position: 'fixed'};
       content = (<FeedContainer />);
     }
     return (
       <MuiThemeProvider>
         <div>
-          <AppBar style={{position: 'fixed'}} title="Politiecontrole" showMenuIconButton={false}/>
+          <AppBar 
+            style={styleAppBar} 
+            title="Politiecontrole" 
+            showMenuIconButton={false}
+          />
           {content}
         </div>        
       </MuiThemeProvider>
