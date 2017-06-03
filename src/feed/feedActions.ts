@@ -23,7 +23,7 @@ export function getPolitieControleFeed(next?: string) {
     return function(dispatch: any) {
         let params = {};
         if (next) {
-            params = {limit: 5};
+            params = {limit: 15};
         }
         FB.api(
             next ? next : '/politiecontrole/feed',

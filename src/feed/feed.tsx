@@ -6,9 +6,9 @@ import {PolitieControleFeedItem} from '../types/politieControleFeedItem';
 import * as moment from 'moment';
 
 interface FeedProps {
-  feed: Array<PolitieControleFeedItem>;
-  next: string;
-  getFeed: (next?: string) => void;
+  feed?: Array<PolitieControleFeedItem>;
+  next?: string;
+  getFeed?: (next?: string) => void;
 }
 
 interface FeedState {
@@ -20,34 +20,46 @@ export class Feed extends React.Component<FeedProps, FeedState> {
 
   constructor(props: FeedProps) {
     super(props);
-    this.props.getFeed();
+    if (this.props.getFeed ) {
+      this.props.getFeed();
+    }
     window.addEventListener('scroll', this.onScrollHandler);  
   }
 
  facebookLoadNext() {
      if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight) {
-          // you're at the bottom of the page          
-          this.props.getFeed(this.props.next);
+          // you're at the bottom of the page  
+          if (this.props.getFeed) {
+            this.props.getFeed(this.props.next);
+          }        
+          
       }   
  }
 
+ renderItems() {
+    let items = null;
+    if (this.props.feed) {
+      items = this.props.feed.map(function(item: PolitieControleFeedItem, index: number){
+      const key = 'item' + index;
+      return (
+        <ListItem 
+          key={key} 
+          primaryText={item.message} 
+          secondaryText={moment(item.created_time).format('DD/MM/YYYY HH:mm')} 
+        />
+        );    
+      });
+    }
+    return items;
+ }
 
-  render() {
+render() {   
     return (
       <div>
         <List>
           <Subheader>Controles</Subheader>
           {
-            this.props.feed.map(function(item: PolitieControleFeedItem, index: number){
-              const key = 'item' + index;
-              return (
-                <ListItem 
-                  key={key} 
-                  primaryText={item.message} 
-                  secondaryText={moment(item.created_time).format('DD/MM/YYYY HH:mm')} 
-                />
-              );    
-            })
+            this.renderItems()         
           }
         </List>      
       </div>
