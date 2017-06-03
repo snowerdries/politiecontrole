@@ -6,6 +6,10 @@ import injectTapEventPlugin = require('react-tap-event-plugin');
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import AppBar from 'material-ui/AppBar';
 import RaisedButton from 'material-ui/RaisedButton';
+import NavigationRefresh from 'material-ui/svg-icons/navigation/refresh';
+import IconButton from 'material-ui/IconButton';
+import { connect } from 'react-redux';
+import { getPolitieControleFeed } from './feed/feedActions';
 
 declare const FB: any;
 
@@ -13,8 +17,9 @@ const style = {
   margin: 12,
 };
 
-class App extends React.Component<{}, {token?: string}> {
+class App extends React.Component<Props, {token?: string}> {
   onLoginFacebookHandler = this.loginFacebook.bind(this);
+  getFeedHandler = this.getFeed.bind(this);
 
   constructor() {    
     super();
@@ -29,8 +34,8 @@ class App extends React.Component<{}, {token?: string}> {
   checkLoginState() {
       const self = this;
       FB.init({
-              appId: '249544888855622',
-              // appId: '853341981486218',
+              appId: '249544888855622', // PROD
+              // appId: '853341981486218', // DEV
               cookie: true,  // enable cookies to allow the server to access the session
               xfbml: true,  // parse social plugins on this page
               version: 'v2.9' // use graph api version 2.9
@@ -50,6 +55,23 @@ class App extends React.Component<{}, {token?: string}> {
         self.setState({token: response.authResponse.accessToken});
       }
     });
+  }
+
+  getFeed() {    
+    if (this.props.getFeed) {
+      this.props.getFeed();
+    }
+  }
+
+  renderRightIconButton() {
+    return (
+      <IconButton 
+        onClick = {this.getFeedHandler} 
+        disabled={!this.state.token}
+      >
+          <NavigationRefresh />
+      </IconButton>
+    );  
   }
 
   render() {
@@ -72,6 +94,7 @@ class App extends React.Component<{}, {token?: string}> {
             style={styleAppBar} 
             title="Politiecontrole" 
             showMenuIconButton={false}
+            iconElementRight={this.renderRightIconButton()}
           />
           {content}
         </div>        
@@ -80,4 +103,22 @@ class App extends React.Component<{}, {token?: string}> {
   }
 }
 
+interface Props {
+    getFeed?: (next?: string) => void;    
+}
+
+function mapDispatchToProps(dispatch: any, props: Props) {
+    let propsval: Props = {
+        getFeed: (next?: string) => {
+            dispatch(getPolitieControleFeed(next));
+        }
+    };
+    return propsval;   
+}
+
 export default App;
+
+export const AppContainer = connect(
+    null,
+    mapDispatchToProps
+)(App);

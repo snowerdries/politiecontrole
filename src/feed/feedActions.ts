@@ -7,15 +7,17 @@ declare const FB: any;
 export interface GetPolitiecontroleFeedAction extends Action {
     data?: Array<PolitieControleFeedItem>;
     next?: string;
+    orgNext?: string;
 }
 
 export function PolitiecontroleFeedRecieved(data?: Array<PolitieControleFeedItem>,
-                                            next?: string): GetPolitiecontroleFeedAction {
+                                            next?: string,
+                                            orgNext?: string): GetPolitiecontroleFeedAction {
     return {
         type: POLITIECONTROLE_FEED_RECIEVED,
         data: data,
-        next: next
-    
+        next: next,
+        orgNext: orgNext,    
     };
 }
 
@@ -34,7 +36,7 @@ export function getPolitieControleFeed(next?: string) {
                     const items = jsonResult.data.map(function(item: any){
                         return {message: item.message, created_time: item.created_time };
                     });
-                    dispatch(PolitiecontroleFeedRecieved(items, jsonResult.paging.next));
+                    dispatch(PolitiecontroleFeedRecieved(items, jsonResult.paging.next, next));
                 }   
             }
         );        

@@ -4,18 +4,18 @@ import {POLITIECONTROLE_FEED_RECIEVED} from '../constants/actionTypes';
 
 export interface State {
     data: Array<PolitieControleFeedItem>;
-    next: string;
+    next: string;   
 }
 
 const initialState = {
     data: [],
-    next: ''
+    next: ''    
 };
 
 export function feedReducer(state: State = initialState, action: GetPolitiecontroleFeedAction): State {
   switch (action.type) {
     case POLITIECONTROLE_FEED_RECIEVED:
-    let newdata = state.data;
+    let newdata = action.orgNext ? state.data : [];
     if (action.data) {
         newdata = newdata.concat(action.data);
     }    
