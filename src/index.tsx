@@ -1,6 +1,6 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import App from './App';
+import {AppContainer} from './App';
 import registerServiceWorker from './registerServiceWorker';
 import './index.css';
 import {politieControleApp} from './reducers';
@@ -13,7 +13,7 @@ let store = createStore(politieControleApp, {}, applyMiddleware(
         ));
 
 ReactDOM.render(
-  <Provider store={store}><App /></Provider>,
+  <Provider store={store}><AppContainer /></Provider>,
   document.getElementById('root') as HTMLElement
 );
 registerServiceWorker();
