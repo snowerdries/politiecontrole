@@ -2,24 +2,29 @@ import { MainReducer }  from '../reducers';
 import { connect } from 'react-redux';
 import { getPolitieControleFeed } from './feedActions';
 import { Feed } from './feed';
+import {PolitieControleFeedItem} from '../types/politieControleFeedItem';
 
 interface Props {
-    
+    feed?: Array<PolitieControleFeedItem>;
+    next?: string;
+    getFeed?: (next?: string) => void;    
 }
 
 function mapDispatchToProps(dispatch: any, props: Props) {
-    return {
+    let propsval: Props = {
         getFeed: (next?: string) => {
             dispatch(getPolitieControleFeed(next));
         }
     };
+    return propsval;   
 }
 
-function mapStateToProps(state: MainReducer) {
-    return {
+function mapStateToProps(state: MainReducer) {    
+    let propsval: Props = {
         feed: state.feed && state.feed.data ? state.feed.data  : [],
         next: state.feed && state.feed.next ? state.feed.next : ''
     };
+    return propsval;
 }
 
 export const FeedContainer = connect(
