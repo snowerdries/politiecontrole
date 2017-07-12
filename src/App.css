@@ -23,17 +23,25 @@
 }
 
 .itemsList {
-  position: relative;
-  top: 70px;
-  overflow: scroll;
-  height: calc(100vh - 120px);
+  position: absolute;
+  top: 64px;
+  bottom: 56px;
+  overflow: auto;
+  height: calc(100% - 120px);
 }
 
 .footer {
+  overflow: hidden;
   width: 100%;
-  position: fixed;
+  position: absolute;
   bottom: 0px;
   z-index: 1;
+}
+
+.appBar {
+  overflow: hidden;
+  position: absolute;
+  top: 0px;
 }
 
 @keyframes App-logo-spin {

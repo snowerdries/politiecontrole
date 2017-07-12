@@ -135,7 +135,7 @@ class App extends React.Component<Props, {token?: string, filter?: string}> {
       <MuiThemeProvider>
         <div>
           <AppBar 
-            style={styleAppBar} 
+            className="appBar"
             title="Politiecontrole" 
             showMenuIconButton={false}
             iconElementRight={this.renderRightIconButton()}
