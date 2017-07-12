@@ -6,10 +6,17 @@ import injectTapEventPlugin = require('react-tap-event-plugin');
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import AppBar from 'material-ui/AppBar';
 import RaisedButton from 'material-ui/RaisedButton';
-import NavigationRefresh from 'material-ui/svg-icons/navigation/refresh';
 import IconButton from 'material-ui/IconButton';
 import { connect } from 'react-redux';
 import { getPolitieControleFeed } from './feed/feedActions';
+import IconMenu from 'material-ui/IconMenu';
+import MenuItem from 'material-ui/MenuItem';
+import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
+import { MainReducer }  from './reducers';
+import {PolitieControleFeedItem} from './types/politieControleFeedItem';
+import {BottomNavigation, BottomNavigationItem} from 'material-ui/BottomNavigation';
+import Paper from 'material-ui/Paper';
+import FontIcon from 'material-ui/FontIcon';
 
 declare const FB: any;
 
@@ -17,9 +24,13 @@ const style = {
   margin: 12,
 };
 
-class App extends React.Component<Props, {token?: string}> {
+const recentsIcon = <FontIcon className="material-icons">...</FontIcon>;
+
+class App extends React.Component<Props, {token?: string, filter?: string}> {
   onLoginFacebookHandler = this.loginFacebook.bind(this);
   getFeedHandler = this.getFeed.bind(this);
+  allConst = 'all';
+  refreshConst = 'refresh';
 
   constructor() {    
     super();
@@ -29,6 +40,18 @@ class App extends React.Component<Props, {token?: string}> {
 
   componentDidMount() {
     this.checkLoginState();
+  }
+
+  menuItemClicked (item: string) {
+    if (item === this.refreshConst) {
+      if (this.props.getFeed) {
+        this.props.getFeed();
+      }
+      return;
+    }
+    if (this.props.getFeed) {
+        this.props.getFeed('', item === this.allConst ? '' :  item);
+    }
   }
 
   checkLoginState() {
@@ -59,19 +82,40 @@ class App extends React.Component<Props, {token?: string}> {
 
   getFeed() {    
     if (this.props.getFeed) {
-      this.props.getFeed();
+      this.props.getFeed(this.props.next, this.props.filter);
     }
+  }
+
+  renderRightMenuItems() {
+    const items: Array<string> = [];
+    items.push(this.allConst);
+    if (this.props.feed) {
+      this.props.feed.forEach((feedItem) => {
+        if (feedItem.message && feedItem.message.length > 3) {
+          const ident = feedItem.message.substr(0, 3).toLowerCase();
+          if (items.indexOf(ident) < 0) {
+             items.push(ident);
+          }
+        }
+      });
+    }
+    items.push(this.refreshConst);
+    return items.map((item) =>  {
+      return <MenuItem onClick={this.menuItemClicked.bind(this, item)} primaryText={item} />;
+    });
   }
 
   renderRightIconButton() {
     return (
-      <IconButton 
-        onClick = {this.getFeedHandler} 
-        disabled={!this.state.token}
-      >
-          <NavigationRefresh />
-      </IconButton>
-    );  
+      <IconMenu
+        iconButtonElement={
+          <IconButton disabled={!this.state.token}><MoreVertIcon /></IconButton>}
+        targetOrigin={{horizontal: 'right', vertical: 'top'}}
+        anchorOrigin={{horizontal: 'right', vertical: 'top'}}
+      >      
+        {this.renderRightMenuItems()}
+      </IconMenu>
+    );
   }
 
   render() {
@@ -97,6 +141,14 @@ class App extends React.Component<Props, {token?: string}> {
             iconElementRight={this.renderRightIconButton()}
           />
           {content}
+          <Paper zDepth={1}>
+            <BottomNavigation>
+              <BottomNavigationItem
+                onTouchTap={this.getFeedHandler}
+                icon={recentsIcon}
+              />
+            </BottomNavigation>
+          </Paper>
         </div>        
       </MuiThemeProvider>
     );
@@ -104,21 +156,33 @@ class App extends React.Component<Props, {token?: string}> {
 }
 
 interface Props {
-    getFeed?: (next?: string) => void;    
+    getFeed?: (next?: string, filter?: string) => void;
+    feed?: Array<PolitieControleFeedItem>;
+    next?: string;
+    filter?: string;
 }
 
 function mapDispatchToProps(dispatch: any, props: Props) {
     let propsval: Props = {
-        getFeed: (next?: string) => {
-            dispatch(getPolitieControleFeed(next));
+        getFeed: (next?: string, filter?: string) => {
+            dispatch(getPolitieControleFeed(next, filter));
         }
     };
     return propsval;   
 }
 
+function mapStateToProps(state: MainReducer) {
+    let propsval: Props = {
+        feed: state.feed && state.feed.data ? state.feed.data  : [],
+        next: state.feed && state.feed.next ? state.feed.next : undefined,
+        filter: state.feed && state.feed.filter ? state.feed.filter : undefined        
+    };
+    return propsval;
+}
+
 export default App;
 
 export const AppContainer = connect(
-    null,
+    mapStateToProps,
     mapDispatchToProps
 )(App);

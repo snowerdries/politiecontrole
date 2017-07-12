@@ -1,7 +1,6 @@
 import * as React from 'react';
 import '../App.css';
 import {List, ListItem} from 'material-ui/List';
-import Subheader from 'material-ui/Subheader';
 import {PolitieControleFeedItem} from '../types/politieControleFeedItem';
 import * as moment from 'moment';
 import Avatar from 'material-ui/Avatar';
@@ -9,7 +8,8 @@ import Avatar from 'material-ui/Avatar';
 interface FeedProps {
   feed?: Array<PolitieControleFeedItem>;
   next?: string;
-  getFeed?: (next?: string) => void;
+  filter?: string;
+  getFeed?: (next?: string, filter?: string) => void;
 }
 
 interface FeedState {
@@ -17,25 +17,12 @@ interface FeedState {
 }
 
 export class Feed extends React.Component<FeedProps, FeedState> {
-  onScrollHandler = this.facebookLoadNext.bind(this);
-
   constructor(props: FeedProps) {
     super(props);
     if (this.props.getFeed ) {
       this.props.getFeed();
     }
-    window.addEventListener('scroll', this.onScrollHandler);  
-  }
-
- facebookLoadNext() {
-     if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight) {
-          // you're at the bottom of the page  
-          if (this.props.getFeed) {
-            this.props.getFeed(this.props.next);
-          }        
-          
-      }   
- }
+}
 
 getRandowColorForString(input: string) {
   return '#' + this.intToRGB(this.hashCode(input));
@@ -68,6 +55,7 @@ renderItems() {
       const color = self.getRandowColorForString(messagePart);
       return (
         <ListItem 
+          className="listItem" 
           key={key} 
           primaryText={item.message} 
           secondaryText={moment(item.created_time).format('DD/MM/YYYY HH:mm')} 
@@ -83,7 +71,6 @@ render() {
     return (
       <div>
         <List>
-          <Subheader>Controles</Subheader>
           {
             this.renderItems()         
           }

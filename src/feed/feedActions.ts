@@ -8,20 +8,22 @@ export interface GetPolitiecontroleFeedAction extends Action {
     data?: Array<PolitieControleFeedItem>;
     next?: string;
     orgNext?: string;
+    filter?: string;
 }
 
 export function PolitiecontroleFeedRecieved(data?: Array<PolitieControleFeedItem>,
                                             next?: string,
-                                            orgNext?: string): GetPolitiecontroleFeedAction {
+                                            orgNext?: string, filter?: string): GetPolitiecontroleFeedAction {
     return {
         type: POLITIECONTROLE_FEED_RECIEVED,
         data: data,
         next: next,
         orgNext: orgNext,    
+        filter: filter
     };
 }
 
-export function getPolitieControleFeed(next?: string) {
+export function getPolitieControleFeed(next?: string, filter?: string) {
     return function(dispatch: any) {
         let params = {};
         if (next) {
@@ -36,7 +38,7 @@ export function getPolitieControleFeed(next?: string) {
                     const items = jsonResult.data.map(function(item: any){
                         return {message: item.message, created_time: item.created_time };
                     });
-                    dispatch(PolitiecontroleFeedRecieved(items, jsonResult.paging.next, next));
+                    dispatch(PolitiecontroleFeedRecieved(items, jsonResult.paging.next, next, filter));
                 }   
             }
         );        
