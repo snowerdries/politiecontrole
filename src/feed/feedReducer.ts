@@ -22,7 +22,7 @@ export function feedReducer(state: State = initialState, action: GetPolitiecontr
     }    
     if (action.filter) {
         newdata = newdata.filter((item) => {
-            return item.message.toLocaleLowerCase().startsWith(action.filter ? action.filter : '');
+            return item.message && item.message.toLocaleLowerCase().startsWith(action.filter ? action.filter : '');
         });
     }
     return {

@@ -70,7 +70,7 @@ renderItems() {
 render() {   
     return (
       <div className="itemsList">
-        <List style={{height: '10px'}}>
+        <List style={{}}>
           {
             this.renderItems()         
           }
