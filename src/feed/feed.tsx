@@ -69,8 +69,8 @@ renderItems() {
 
 render() {   
     return (
-      <div>
-        <List>
+      <div className="itemsList">
+        <List style={{height: '10px'}}>
           {
             this.renderItems()         
           }

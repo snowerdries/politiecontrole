@@ -57,8 +57,8 @@ class App extends React.Component<Props, {token?: string, filter?: string}> {
   checkLoginState() {
       const self = this;
       FB.init({
-              appId: '249544888855622', // PROD
-              // appId: '853341981486218', // DEV
+              // appId: '249544888855622', // PROD
+              appId: '853341981486218', // DEV
               cookie: true,  // enable cookies to allow the server to access the session
               xfbml: true,  // parse social plugins on this page
               version: 'v2.9' // use graph api version 2.9
@@ -141,7 +141,7 @@ class App extends React.Component<Props, {token?: string, filter?: string}> {
             iconElementRight={this.renderRightIconButton()}
           />
           {content}
-          <Paper zDepth={1}>
+          <Paper zDepth={1} className="footer">
             <BottomNavigation>
               <BottomNavigationItem
                 onTouchTap={this.getFeedHandler}
