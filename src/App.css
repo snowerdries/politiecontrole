@@ -26,7 +26,8 @@
   position: absolute;
   top: 64px;
   bottom: 56px;
-  overflow: auto;
+  overflow: scroll;
+  -webkit-overflow-scrolling: touch;
   height: calc(100% - 120px);
 }
 
