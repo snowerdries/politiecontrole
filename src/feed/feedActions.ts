@@ -25,10 +25,11 @@ export function PolitiecontroleFeedRecieved(data?: Array<PolitieControleFeedItem
 
 export function getPolitieControleFeed(next?: string, filter?: string) {
     return function(dispatch: any) {
-        let params = {};
-        if (next) {
-            params = {limit: 15};
+        let params = {limit: 10};
+        if (filter) {
+            params = {limit: 100};
         }
+    
         FB.api(
             next ? next : '/politiecontrole/feed',
             'GET',
