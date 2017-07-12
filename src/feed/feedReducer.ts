@@ -4,7 +4,8 @@ import {POLITIECONTROLE_FEED_RECIEVED} from '../constants/actionTypes';
 
 export interface State {
     data: Array<PolitieControleFeedItem>;
-    next: string;   
+    next?: string; 
+    filter?: string;  
 }
 
 const initialState = {
@@ -19,10 +20,16 @@ export function feedReducer(state: State = initialState, action: GetPolitiecontr
     if (action.data) {
         newdata = newdata.concat(action.data);
     }    
+    if (action.filter) {
+        newdata = newdata.filter((item) => {
+            return item.message.toLocaleLowerCase().startsWith(action.filter ? action.filter : '');
+        });
+    }
     return {
         ...state,
         data: newdata,
-        next: action.next
+        next: action.next,
+        filter: action.filter
     };   
     default:
         return {
