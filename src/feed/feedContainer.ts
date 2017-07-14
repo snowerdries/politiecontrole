@@ -8,7 +8,8 @@ interface Props {
     feed?: Array<PolitieControleFeedItem>;
     next?: string;
     filter?: string;
-    getFeed?: (next?: string, filter?: string) => void;    
+    getFeed?: (next?: string, filter?: string) => void;
+    scrollToTop?: boolean;  
 }
 
 function mapDispatchToProps(dispatch: any, props: Props) {
@@ -24,7 +25,8 @@ function mapStateToProps(state: MainReducer) {
     let propsval: Props = {
         feed: state.feed && state.feed.data ? state.feed.data  : [],
         next: state.feed && state.feed.next ? state.feed.next : '',
-        filter: state.feed && state.feed.filter ? state.feed.filter : ''
+        filter: state.feed && state.feed.filter ? state.feed.filter : '',
+        scrollToTop: state.feed && state.feed.scrollToTop
     };
     return propsval;
 }

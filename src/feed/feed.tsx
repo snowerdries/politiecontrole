@@ -10,6 +10,7 @@ interface FeedProps {
   next?: string;
   filter?: string;
   getFeed?: (next?: string, filter?: string) => void;
+  scrollToTop?: boolean;
 }
 
 interface FeedState {
@@ -23,6 +24,16 @@ export class Feed extends React.Component<FeedProps, FeedState> {
       this.props.getFeed();
     }
 }
+
+  componentDidUpdate() {
+    if (this.props.scrollToTop) {
+      const list = document.getElementById('feedList');
+      if (!list) {
+        return;
+      }
+      list.scrollTop = 0;
+    }
+  }
 
 getRandowColorForString(input: string) {
   return '#' + this.intToRGB(this.hashCode(input));
@@ -69,7 +80,7 @@ renderItems() {
 
 render() {   
     return (
-      <div className="itemsList">
+      <div id="feedList" className="itemsList">
         <List style={{}}>
           {
             this.renderItems()         
