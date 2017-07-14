@@ -5,7 +5,8 @@ import {POLITIECONTROLE_FEED_RECIEVED} from '../constants/actionTypes';
 export interface State {
     data: Array<PolitieControleFeedItem>;
     next?: string; 
-    filter?: string;  
+    filter?: string; 
+    scrollToTop?: boolean; 
 }
 
 const initialState = {
@@ -22,14 +23,15 @@ export function feedReducer(state: State = initialState, action: GetPolitiecontr
     }    
     if (action.filter) {
         newdata = newdata.filter((item) => {
-            return item.message && item.message.toLocaleLowerCase().startsWith(action.filter ? action.filter : '');
+            return item.message && item.message.toLocaleLowerCase().indexOf(action.filter ? action.filter : '') > -1;
         });
     }
     return {
         ...state,
         data: newdata,
         next: action.next,
-        filter: action.filter
+        filter: action.filter,
+        scrollToTop: !action.orgNext ? true : false
     };   
     default:
         return {
